@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Checkbox, Button, DatePicker, Icon } from 'antd';
+import { Row, Col, Input, Checkbox, Button, DatePicker, Icon } from 'antd';
 import 'antd/dist/antd.css';
 
-export default function List({
-  listItems,
-  addNewTodo,
-  onTodoComplete,
-  onDelete
-}) {
+export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(null);
@@ -41,24 +36,40 @@ export default function List({
   return (
     <Section>
       <form onSubmit={onNewToDo}>
-        <Input
-          placeholder='Task Title'
-          value={title}
-          onChange={onTitleChange}
-          required
-        />
+        <Row gutter={[4, 4]}>
+          <Col span={16}>
+            <Input
+              placeholder='Task Title'
+              value={title}
+              onChange={onTitleChange}
+              required
+            />
+          </Col>
+          <Col span={8}>
+            <DatePicker
+              placeholder='Due date'
+              onChange={onDateChange}
+              value={date}
+            />
+          </Col>
+        </Row>
         <Input
           placeholder='Task Description (Optional)'
           value={description}
           onChange={onDescriptionChange}
+          id='description'
         />
-        <DatePicker onChange={onDateChange} value={date} />
-        <Button htmlType='submit'>Add New Task</Button>
+        <Button htmlType='submit'>Add Task</Button>
       </form>
       <Ul>
         {listItems.map((item, i) => (
           <ListItem key={i}>
-            <TaskCheckBox>{item.title}</TaskCheckBox>
+            <TaskCheckBox
+              onChange={() => onComplete(item.id)}
+              checked={item.status === 'done'}
+            >
+              {item.title}
+            </TaskCheckBox>
             <div>
               <DueDate>
                 {item.dueDate && item.dueDate.format('YYYY-MM-DD')}
@@ -74,6 +85,7 @@ export default function List({
 
 const TaskCheckBox = styled(Checkbox)`
   padding-top 0.15em;
+  text-decoration: ${props => (props.checked ? 'line-through' : 'none')}
 `;
 
 const Delete = styled(Icon)`
@@ -86,15 +98,19 @@ const Section = styled.section`
   border-radius: 5px;
   height: 50vh;
   padding: 0.25rem;
+
+  #description {
+    margin-bottom: 0.15em;
+  }
 `;
 
-const Input = styled.input`
-  width: 100%;
-  border: 1px solid var(--lightgrey);
-  border-radius: 5px;
-  padding-left: 0.75em;
-  height: 2.6em;
-`;
+// const Input = styled.input`
+//   width: 100%;
+//   border: 1px solid var(--lightgrey);
+//   border-radius: 5px;
+//   padding-left: 0.75em;
+//   height: 2.6em;
+// `;
 
 const Ul = styled.ul`
   padding: 0;

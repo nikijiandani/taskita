@@ -18,11 +18,17 @@ function App() {
       dueDate: todo.dueDate
     };
     setList([...list, myTodo]);
-    console.log(list);
   };
 
-  const onTodoComplete = todo => {
-    console.log(todo);
+  const handleComplete = id => {
+    const todo = list.find(item => item.id === id);
+    todo.status === 'pending'
+      ? (todo.status = 'done')
+      : (todo.status = 'pending');
+    const updatedList = list.map(item => {
+      return item.id === todo.id ? todo : item;
+    });
+    setList(updatedList);
   };
 
   const handleDelete = id => {
@@ -36,7 +42,7 @@ function App() {
       <List
         listItems={list}
         addNewTodo={onNewTodo}
-        onTodoComplete={onTodoComplete}
+        onComplete={handleComplete}
         onDelete={handleDelete}
       />
       <Footer />
@@ -47,6 +53,9 @@ function App() {
 export default App;
 
 const Container = styled.main`
-  width: 70%;
+  width: 100%;
   margin: 5em auto;
+  @media (min-width: 525px) {
+    width: 523px;
+  }
 `;
