@@ -9,16 +9,17 @@ function App() {
   const [list, setList] = useState([]);
 
   const handleTodo = todo => {
-    //checks if the unique todo id already exists in the list, if it does, then it replaces it with the new updated todo.
-    console.log(todo);
-    if (list.length > 0) {
-      const todoList = list.map(item => {
+    //check if a todo with the same unique id already exists
+    const findTodo = list.find(item => item.id === todo.id);
+    if (findTodo) {
+      //update list with new updated todo
+      const updatedList = list.map(item => {
         return item.id === todo.id ? todo : item;
       });
-      console.log(todoList);
-      setList(todoList);
+      setList(updatedList);
     } else {
-      setList([todo]);
+      //add the new todo to the list
+      setList([todo, ...list]);
     }
   };
 
