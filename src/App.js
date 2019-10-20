@@ -4,20 +4,22 @@ import List from './containers/List';
 import Footer from './containers/Footer';
 import './App.css';
 import styled from 'styled-components';
-import uuid from 'uuid';
 
 function App() {
   const [list, setList] = useState([]);
 
-  const onNewTodo = todo => {
-    let myTodo = {
-      id: uuid.v4(),
-      title: todo.title,
-      description: todo.description,
-      status: 'pending',
-      dueDate: todo.dueDate
-    };
-    setList([myTodo, ...list]);
+  const handleTodo = todo => {
+    //checks if the unique todo id already exists in the list, if it does, then it replaces it with the new updated todo.
+    console.log(todo);
+    if (list.length > 0) {
+      const todoList = list.map(item => {
+        return item.id === todo.id ? todo : item;
+      });
+      console.log(todoList);
+      setList(todoList);
+    } else {
+      setList([todo]);
+    }
   };
 
   const handleComplete = id => {
@@ -41,7 +43,7 @@ function App() {
       <Header />
       <List
         listItems={list}
-        addNewTodo={onNewTodo}
+        onTodo={handleTodo}
         onComplete={handleComplete}
         onDelete={handleDelete}
       />

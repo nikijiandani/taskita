@@ -3,25 +3,30 @@ import styled from 'styled-components';
 import { Row, Col, Collapse, Input, Button, DatePicker, Icon } from 'antd';
 import 'antd/dist/antd.css';
 import TaskHeader from '../components/TaskHeader';
+import uuid from 'uuid';
 
 const { Panel } = Collapse;
 
-export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
+export default function List({ listItems, onTodo, onComplete, onDelete }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(null);
+  const [currentTask, setCurrentTask] = useState(null);
 
-  const onNewToDo = e => {
+  const onTodoSubmit = e => {
     e.preventDefault();
-    let newTodo = {
+    let todo = {
+      id: currentTask ? currentTask.id : uuid.v4(),
       title: title,
       description: description,
+      status: 'pending',
       dueDate: date
     };
-    addNewTodo(newTodo);
+    onTodo(todo);
     setTitle('');
     setDescription('');
     setDate(null);
+    setCurrentTask(null);
   };
 
   const onTitleChange = e => {
@@ -36,9 +41,17 @@ export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
     setDate(date);
   };
 
+  const handleEdit = id => {
+    const todo = listItems.find(item => item.id === id);
+    setTitle(todo.title);
+    setDescription(todo.description);
+    setDate(todo.dueDate);
+    setCurrentTask(todo);
+  };
+
   return (
     <Section>
-      <form onSubmit={onNewToDo}>
+      <form onSubmit={onTodoSubmit}>
         <Row gutter={[4, 4]}>
           <Col span={16}>
             <Input
@@ -62,22 +75,30 @@ export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
           onChange={onDescriptionChange}
           id='description'
         />
-        <Button htmlType='submit'>Add Task</Button>
+        <Button htmlType='submit'>
+          {currentTask ? 'Save Task' : 'Add Task'}
+        </Button>
       </form>
-      <Collapse expandIconPosition='right'>
+      <StyledCollapse expandIconPosition='right'>
         {listItems.map((item, i) => (
           <Panel
             key={i}
             header={<TaskHeader item={item} onComplete={onComplete} />}
           >
             <P strikethrough={item.status === 'done'}>{item.description}</P>
+            <Button onClick={() => handleEdit(item.id)}>Edit</Button>
             <DeleteButton type='delete' onClick={() => onDelete(item.id)} />
           </Panel>
         ))}
-      </Collapse>
+      </StyledCollapse>
     </Section>
   );
 }
+
+const StyledCollapse = styled(Collapse)`
+  overflow: auto;
+  height: 355px;
+`;
 
 const DeleteButton = styled(Icon)`
   font-size: 1.5em;
