@@ -4,23 +4,41 @@ import List from './components/List';
 import Footer from './components/Footer';
 import './App.css';
 import styled from 'styled-components';
+import uuid from 'uuid';
 
 function App() {
   const [list, setList] = useState([]);
 
   const onNewTodo = todo => {
-    console.log(todo);
     let myTodo = {
-      createdAt: Date.now(),
-      content: todo
+      id: uuid.v4(),
+      title: todo.title,
+      description: todo.description,
+      status: 'pending',
+      dueDate: todo.dueDate
     };
     setList([...list, myTodo]);
+    console.log(list);
+  };
+
+  const onTodoComplete = todo => {
+    console.log(todo);
+  };
+
+  const handleDelete = id => {
+    const updatedList = list.filter(item => item.id !== id);
+    setList(updatedList);
   };
 
   return (
     <Container>
       <Header />
-      <List listItems={list} onNewTodo={onNewTodo} />
+      <List
+        listItems={list}
+        addNewTodo={onNewTodo}
+        onTodoComplete={onTodoComplete}
+        onDelete={handleDelete}
+      />
       <Footer />
     </Container>
   );
@@ -29,6 +47,6 @@ function App() {
 export default App;
 
 const Container = styled.main`
-  width: 50%;
+  width: 70%;
   margin: 5em auto;
 `;
