@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col, Input, Checkbox, Button, DatePicker, Icon } from 'antd';
+import { Row, Col, Collapse, Input, Button, DatePicker, Icon } from 'antd';
 import 'antd/dist/antd.css';
+import TaskHeader from '../components/TaskHeader';
+
+const { Panel } = Collapse;
 
 export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
   const [title, setTitle] = useState('');
@@ -53,7 +56,7 @@ export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
             />
           </Col>
         </Row>
-        <Input
+        <Input.TextArea
           placeholder='Task Description (Optional)'
           value={description}
           onChange={onDescriptionChange}
@@ -61,34 +64,22 @@ export default function List({ listItems, addNewTodo, onComplete, onDelete }) {
         />
         <Button htmlType='submit'>Add Task</Button>
       </form>
-      <Ul>
+      <Collapse expandIconPosition='right'>
         {listItems.map((item, i) => (
-          <ListItem key={i}>
-            <TaskCheckBox
-              onChange={() => onComplete(item.id)}
-              checked={item.status === 'done'}
-            >
-              {item.title}
-            </TaskCheckBox>
-            <div>
-              <DueDate>
-                {item.dueDate && item.dueDate.format('YYYY-MM-DD')}
-              </DueDate>
-              <Delete type='delete' onClick={() => onDelete(item.id)} />
-            </div>
-          </ListItem>
+          <Panel
+            key={i}
+            header={<TaskHeader item={item} onComplete={onComplete} />}
+          >
+            <P strikethrough={item.status === 'done'}>{item.description}</P>
+            <DeleteButton type='delete' onClick={() => onDelete(item.id)} />
+          </Panel>
         ))}
-      </Ul>
+      </Collapse>
     </Section>
   );
 }
 
-const TaskCheckBox = styled(Checkbox)`
-  padding-top 0.15em;
-  text-decoration: ${props => (props.checked ? 'line-through' : 'none')}
-`;
-
-const Delete = styled(Icon)`
+const DeleteButton = styled(Icon)`
   font-size: 1.5em;
   padding-top: 0.1em;
 `;
@@ -104,28 +95,6 @@ const Section = styled.section`
   }
 `;
 
-// const Input = styled.input`
-//   width: 100%;
-//   border: 1px solid var(--lightgrey);
-//   border-radius: 5px;
-//   padding-left: 0.75em;
-//   height: 2.6em;
-// `;
-
-const Ul = styled.ul`
-  padding: 0;
-`;
-
-const ListItem = styled.li`
-  list-style-type: none;
-  border: 1px solid var(--lightgrey);
-  border-radius: 5px;
-  padding: 0.5em;
-  margin-top: 0.25em;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const DueDate = styled.span`
-  color: var(--ligthgrey);
+const P = styled.p`
+  text-decoration: ${props => (props.strikethrough ? 'line-through' : 'none')};
 `;

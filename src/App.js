@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Header from './components/Header';
-import List from './components/List';
-import Footer from './components/Footer';
+import Header from './containers/Header';
+import List from './containers/List';
+import Footer from './containers/Footer';
 import './App.css';
 import styled from 'styled-components';
 import uuid from 'uuid';
@@ -17,7 +17,7 @@ function App() {
       status: 'pending',
       dueDate: todo.dueDate
     };
-    setList([...list, myTodo]);
+    setList([myTodo, ...list]);
   };
 
   const handleComplete = id => {
