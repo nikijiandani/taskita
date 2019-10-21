@@ -49,11 +49,16 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
     setCurrentTask(todo);
   };
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < Date.now();
+  }
+
   return (
     <Section>
       <form onSubmit={onTodoSubmit}>
         <Row gutter={[4, 4]}>
-          <Col span={16}>
+          <Col xs={{ span: 24 }} sm={{ span: 16 }}>
             <Input
               placeholder='Task Title'
               value={title}
@@ -63,11 +68,12 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
               maxLength={40}
             />
           </Col>
-          <Col span={8}>
+          <Col xs={{ span: 24 }} sm={{ span: 8 }}>
             <DatePicker
               placeholder='Due date'
               onChange={onDateChange}
               value={date}
+              disabledDate={disabledDate}
             />
           </Col>
         </Row>
@@ -77,6 +83,7 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
           onChange={onDescriptionChange}
           id='description'
           maxLength={500}
+          autoSize={true}
         />
         <Button htmlType='submit' style={{ marginBottom: '0.15em' }}>
           {currentTask ? 'Save Task' : 'Add Task'}
