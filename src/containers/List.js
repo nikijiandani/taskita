@@ -59,6 +59,8 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
               value={title}
               onChange={onTitleChange}
               required
+              allowClear
+              maxLength={40}
             />
           </Col>
           <Col span={8}>
@@ -74,8 +76,9 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
           value={description}
           onChange={onDescriptionChange}
           id='description'
+          maxLength={500}
         />
-        <Button htmlType='submit'>
+        <Button htmlType='submit' style={{ marginBottom: '0.15em' }}>
           {currentTask ? 'Save Task' : 'Add Task'}
         </Button>
       </form>
@@ -85,9 +88,18 @@ export default function List({ listItems, onTodo, onComplete, onDelete }) {
             key={i}
             header={<TaskHeader item={item} onComplete={onComplete} />}
           >
-            <P strikethrough={item.status === 'done'}>{item.description}</P>
-            <Button onClick={() => handleEdit(item.id)}>Edit</Button>
-            <DeleteButton type='delete' onClick={() => onDelete(item.id)} />
+            <Dropdown>
+              <P strikethrough={item.status === 'done'}>{item.description}</P>
+
+              <ButtonGroup>
+                <Button onClick={() => handleEdit(item.id)} icon='edit'>
+                  Edit
+                </Button>
+                <Button onClick={() => onDelete(item.id)} icon='delete'>
+                  Delete
+                </Button>
+              </ButtonGroup>
+            </Dropdown>
           </Panel>
         ))}
       </StyledCollapse>
@@ -100,15 +112,9 @@ const StyledCollapse = styled(Collapse)`
   height: 355px;
 `;
 
-const DeleteButton = styled(Icon)`
-  font-size: 1.5em;
-  padding-top: 0.1em;
-`;
-
 const Section = styled.section`
   border: 1px solid var(--lightgrey);
   border-radius: 5px;
-  height: 50vh;
   padding: 0.25rem;
 
   #description {
@@ -118,4 +124,13 @@ const Section = styled.section`
 
 const P = styled.p`
   text-decoration: ${props => (props.strikethrough ? 'line-through' : 'none')};
+`;
+
+const Dropdown = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ButtonGroup = styled.div`
+  align-self: flex-end;
 `;

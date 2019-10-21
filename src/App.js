@@ -28,10 +28,8 @@ function App() {
     todo.status === 'pending'
       ? (todo.status = 'done')
       : (todo.status = 'pending');
-    const updatedList = list.map(item => {
-      return item.id === todo.id ? todo : item;
-    });
-    setList(updatedList);
+    const updatedList = list.filter(item => item.id !== id);
+    setList([...updatedList, todo]);
   };
 
   const handleDelete = id => {

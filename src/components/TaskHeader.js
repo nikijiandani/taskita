@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Checkbox } from 'antd';
+import { Checkbox, Icon } from 'antd';
 import 'antd/dist/antd.css';
 
 export default function TaskHeader({ item, onComplete }) {
@@ -15,9 +15,12 @@ export default function TaskHeader({ item, onComplete }) {
       >
         {item.title}
       </TaskCheckBox>
-      <DueDate strikethrough={item.status === 'done'}>
-        {item.dueDate && item.dueDate.format('YYYY-MM-DD')}
-      </DueDate>
+      <div>
+        {item.description && <Icon type='pushpin' />}
+        <DueDate strikethrough={item.status === 'done'}>
+          {item.dueDate && item.dueDate.format('YYYY-MM-DD')}
+        </DueDate>
+      </div>
     </Header>
   );
 }
@@ -25,6 +28,10 @@ export default function TaskHeader({ item, onComplete }) {
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 475px) {
+    flex-direction: column;
+  }
 `;
 
 const TaskCheckBox = styled(Checkbox)`
@@ -36,4 +43,5 @@ const TaskCheckBox = styled(Checkbox)`
 const DueDate = styled.span`
   color: var(--ligthgrey);
   text-decoration: ${props => (props.strikethrough ? 'line-through' : 'none')};
+  margin-left: 0.5em;
 `;
