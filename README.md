@@ -1,3 +1,32 @@
+#Taskita
+
+Taskita is a Todo list style Web Application built with ReactJs.
+
+The user is able to create multiple items that they want to remember to do and are able to add, edit, and remove tasks.
+
+## Final Product
+
+#### Adding a new Task
+
+!["adding-a-task"](/public/screenshots/adding-a-task.gif)
+
+## Usage
+
+Clone the git repo.
+
+```
+  git clone git@github.com:nikijiandani/taskita.git
+  cd taskita
+```
+
+Install the dependencies and start the server
+
+```
+npm install || yarn install
+npm start || yarn start
+open http://localhost:3000
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
