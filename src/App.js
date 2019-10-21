@@ -29,7 +29,11 @@ export default function App() {
       ? (todo.status = 'done')
       : (todo.status = 'pending');
     const updatedList = list.filter(item => item.id !== id);
-    setList([...updatedList, todo]);
+    if (todo.status === 'done') {
+      setList([...updatedList, todo]);
+    } else {
+      setList([todo, ...updatedList]);
+    }
   };
 
   const handleDelete = id => {
