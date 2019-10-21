@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Checkbox, Icon } from 'antd';
+import { Icon } from 'antd';
 import 'antd/dist/antd.css';
+import { Header, TaskCheckBox, DueDate } from './StyledComponents';
 
 export default function TaskHeader({ item, onComplete }) {
   return (
@@ -24,24 +24,3 @@ export default function TaskHeader({ item, onComplete }) {
     </Header>
   );
 }
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-
-  @media (max-width: 475px) {
-    flex-direction: column;
-  }
-`;
-
-const TaskCheckBox = styled(Checkbox)`
-  font-size: 1em;
-  padding-top 0.15em;
-  text-decoration: ${props => (props.checked ? 'line-through' : 'none')}
-`;
-
-const DueDate = styled.span`
-  color: var(--ligthgrey);
-  text-decoration: ${props => (props.strikethrough ? 'line-through' : 'none')};
-  margin-left: 0.5em;
-`;

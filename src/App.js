@@ -3,9 +3,9 @@ import Header from './containers/Header';
 import List from './containers/List';
 import Footer from './containers/Footer';
 import './App.css';
-import styled from 'styled-components';
+import { Container } from './components/StyledComponents';
 
-function App() {
+export default function App() {
   const [list, setList] = useState([]);
 
   const handleTodo = todo => {
@@ -50,13 +50,3 @@ function App() {
     </Container>
   );
 }
-
-export default App;
-
-const Container = styled.main`
-  width: 100%;
-  margin: 5em auto;
-  @media (min-width: 525px) {
-    width: 523px;
-  }
-`;
