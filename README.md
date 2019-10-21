@@ -1,4 +1,5 @@
-#Taskita
+Taskita
+=====================
 
 Taskita is a Todo list style Web Application built with ReactJs.
 
