@@ -13,10 +13,8 @@ export default function App() {
     const findTodo = list.find(item => item.id === todo.id);
     if (findTodo) {
       //update list with new updated todo
-      const updatedList = list.map(item => {
-        return item.id === todo.id ? todo : item;
-      });
-      setList(updatedList);
+      const updatedList = list.filter(item => item.id !== todo.id);
+      setList([todo, ...updatedList]);
     } else {
       //add the new todo to the list
       setList([todo, ...list]);
